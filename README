@@ -1,7 +1,7 @@
 A sabNZBd+ API using script to add a file to sabnzbd+
 
 Installing:
-$ wget http://github.com/dougle/sabnzbd_enqueue/raw/master/sabnzbd_enqueue -o /usr/bin/sabnzbd_enqueue && \
+$ wget http://github.com/dougle/sabNZBd-Enqueue/raw/master/sabnzbd_enqueue -o /usr/bin/sabnzbd_enqueue && \
   chmod +x /usr/bin/sabnzbd_enqueue
 
 Usage:
