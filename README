@@ -4,8 +4,18 @@ Installing:
 $ wget http://github.com/dougle/sabNZBd-Enqueue/raw/master/sabnzbd_enqueue -o /usr/bin/sabnzbd_enqueue && \
   chmod +x /usr/bin/sabnzbd_enqueue
 
+This script uses notify-send for the messages which is in libnotify-bin package
+$ aptitude install libnotify-bin && notify-send 'libnotify', 'Libnotify has been installed'
+
+Currently it reads in your sabnzb config (assumed to be at ~/.sabnzbd/sabnzbd.ini) and uses it for most settings, the future aim of this script is to be totally reliant on sabs config and not require any setting up of it's own.
+
 Usage:
-$ sabnzbd_enqueue /abs/path/to/file.nzb
+$ sabnzbd_enqueue "/abs/path/to/file.nzb"
 
 From nautilus you can view an nzb file's properties and associate sabnzbd_enqueue with it in the "open with" tab, this will then work nicley system wide.
 
+Personnally i set chromium and firefox to open these files via sabnzbd_enqueue as soon as they are downloaded, which works pretty smoothly.
+
+Well done to the sabnzbd+ people.
+
+Next to come is a lightweight panel applet to see sabnzbd+ queue and status.
