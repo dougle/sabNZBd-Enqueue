@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# written by Daniel Craig 28/02/2010
+
+
+
+# clean ini file
+INI="$HOME/.sabnzbd/sabnzbd.ini"
+CLEAN_INI=${INI/%\.ini/\.clean.ini}
+grep -m1 '^port' $INI >> $CLEAN_INI
+grep -m1 '^api_key' $INI >> $CLEAN_INI
+sed -ri 's/([A-Za-z0-9_]+) = /\1=/' $CLEAN_INI
+# read ini settings
+. $CLEAN_INI
+rm -f $CLEAN_INI
+
+# convert ampersands in the filename to url encoded equivs, html equivs
+ESCAPED_FILE_PATH=`echo $1 | sed -r 's/&/%26/'`
+HTML_ESCAPED_FILE_PATH=`echo $1 | sed -r 's/&/&amp;/'`
+
+# get a name to feedback to the user
+FILEBASE=`basename "$1" .nzb`
+# build a string to search the api queue respnse
+SEARCH_QUERY="<filename>$(basename "$HTML_ESCAPED_FILE_PATH" .nzb)</filename>"
+
+# get the current queue and check for this file
+QUEUE=`wget -O - -S "http://localhost:$port/api?mode=qstatus&output=xml&apikey=$api_key"`
+if [[ "$QUEUE" =~ "$SEARCH_QUERY" ]]
+then
+	notify-send -i "/usr/share/sabnzbdplus/interfaces/wizard/static/images/icon_sab.png" 'SABnzbd' "$FILEBASE is already in the queue."
+	exit 0
+fi
+
+RESPONSE=`wget -O - -S "http://localhost:$port/api?mode=addlocalfile&name=$ESCAPED_FILE_PATH&apikey=$api_key"`
+
+NOTIFY_BODY=""
+ICON="/usr/share/sabnzbdplus/interfaces/wizard/static/images/icon_sab.png"
+TITLE="SABnzbd"
+if [[ $? == 0 && $RESPONSE == 'ok' ]]
+then
+	NOTIFY_BODY="$FILEBASE was added to the queue."
+	notify-send -i "$ICON" "$TITLE" "$NOTIFY_BODY"
+	exit 0
+else
+	NOTIFY_BODY=$RESPONSE
+	notify-send -i "$ICON" "$TITLE" "$NOTIFY_BODY"
+	exit 1
+fi

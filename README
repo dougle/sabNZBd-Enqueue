@@ -1,0 +1,11 @@
+A sabNZBd+ API using script to add a file to sabnzbd+
+
+Installing:
+$ wget http://github.com/dougle/sabnzbd_enqueue/raw/master/sabnzbd_enqueue -o /usr/bin/sabnzbd_enqueue && \
+  chmod +x /usr/bin/sabnzbd_enqueue
+
+Usage:
+$ sabnzbd_enqueue /abs/path/to/file.nzb
+
+From nautilus you can view an nzb file's properties and associate sabnzbd_enqueue with it in the "open with" tab, this will then work nicley system wide.
+
